@@ -1,0 +1,6 @@
+[http]
+	proxy = http://ftn.proxy:8080
+	proxu = http://ftn.proxy:8080
+[https]
+	proxy = https://ftn.proxy:8080
+	proxu = https://ftn.proxy:8080
