@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+size_t num_of_bytes = 6;
+
 //funkcija koja vraca stanje tastera na poziciji pos
-char buttonState(FILE *fp, size_t num_of_bytes, char pos);
-char readSwitches(FILE *fp,  size_t num_of_bytes);
+char buttonState(char pos);
 
 int main ()
 {
@@ -13,8 +14,6 @@ int main ()
   float percentage = 0.6;
   float step = 0.05;
   long int period = 20000L;
-  char tval0,tval1;
-  size_t num_of_bytes = 6;
   char sd = 1;
   char* str;
   int sval1,sval2;
@@ -53,7 +52,7 @@ int main ()
       usleep ((1-percentage)*period);
 
       // ako je pritisnut taster 0 umanji pwm
-      if (buttonState(fb, num_of_bytes, 0))
+      if (buttonState(0))
 	{
 	  if(sd == 1)
 	    {
@@ -65,11 +64,11 @@ int main ()
 	      else
 		{
 		  printf("Step:%f\n", step);
-		  printf("Can't go lower than 0%\n");
+		  printf("Can't go lower than 0% \n");
 		}
 	    }
 	}
-      else if (buttonState(fb, num_of_bytes, 1))	
+      else if (buttonState(1))	
 	{
 	if(sd == 1)
 	    {
@@ -80,7 +79,7 @@ int main ()
 		percentage += step;
 	      else{
 		printf("Step: %f\n", step);
-		printf("Can't go higher than 100%\n");
+		printf("Can't go higher than 100% \n");
 	      }
 	    }
 	}
@@ -133,17 +132,17 @@ int main ()
   
 }
 
-      char buttonState(FILE *fp, size_t num_of_bytes, char pos)
+      char buttonState(char pos)
       {
-	char* str1;
-	fp = fopen ("/dev/button", "r");
+	char* str;
+	FILE* fp = fopen ("/dev/button", "r");
 	if(fp==NULL)
 	  {
 	    puts ("Problem pri otvaranju /dev/button");
 	    return -1;
 	  }
-	str1 = (char *) malloc (num_of_bytes+1);
-	getline (&str1, &num_of_bytes, fp);
+	str = (char *) malloc (num_of_bytes+1);
+	getline (&str, &num_of_bytes, fp);
 
 	if( fclose (fp))
 	  {
@@ -151,7 +150,8 @@ int main ()
 	    return -1;
 	  }
 	//Vrati vrijednost tastera na poziciji pos
-	char state = str1[pos+2] - 48;
+	char state = str[pos+2] - 48;
+	free(str);
 	return state;
 
       }
