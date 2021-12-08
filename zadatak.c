@@ -60,12 +60,12 @@ int main ()
 
 	      //Umanji pwm
 	      if(percentage > 0)
-		percentage -= step;
-	      else
 		{
-		  printf("Step:%f\n", step);
-		  printf("Can't go lower than 0% \n");
+		  percentage -= step;
+		  printf("Step, percentage: %f%, %f%\n", step, percentage);
 		}
+		  else
+		  printf("Can't go lower than 0% \n");
 	    }
 	}
       else if (buttonState(1))	
@@ -76,11 +76,13 @@ int main ()
 
 	      //Povecaj pwm
 	      if(percentage < 1)
-		percentage += step;
-	      else{
-		printf("Step: %f\n", step);
-		printf("Can't go higher than 100% \n");
-	      }
+		{
+		  percentage += step;
+		  printf("Step, percentage: %f%, %f%\n", step, percentage);
+	      	}
+	      else						\
+		  printf("Can't go higher than 100% \n");
+	      
 	    }
 	}
       else
